@@ -1,4 +1,4 @@
-package ch1;
+package calculator;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -8,20 +8,21 @@ public class calculator {
 	public static void main(String[] args) {
 		System.out.print("请选择求单利1,复利2,本金3,时间4,利率5,投资6,贷款月还款计算7,退出8");
 		Scanner scanner = new Scanner(System.in);
-		int a=0;
-	try{
-		a = Math.abs(scanner.nextInt());}
-		catch(InputMismatchException e){
+		int a = 0;
+		try {
+			a = Math.abs(scanner.nextInt());
+		} catch (InputMismatchException e) {
 			main(null);
 		}
-	input(a);
-	scanner.close();
+		input(a);
+		scanner.close();
 	}
 
 	static void input(int a) {
 		Scanner scanner = new Scanner(System.in);
 		int k = a;
-		String fruit=null;
+		String fruit = null;
+		// record record=new record();
 		try {
 			switch (a) {
 			case 1: {
@@ -29,12 +30,12 @@ public class calculator {
 				double A = Math.abs(scanner.nextDouble());
 				System.out.print("请输入年利率");
 				double rate = Math.abs(scanner.nextDouble());
-				System.out.print("请输入存入年限");
+				System.out.print("请输入年限");
 				double C = Math.abs(scanner.nextInt());
-			double fruit1=simple_interest(A, rate, C);
+				double fruit1 = simple_interest(A, rate, C);
 				System.out.println("单利终值" + fruit1);
 				main(null);
-				
+
 			}
 				break;
 			case 2: {
@@ -44,7 +45,7 @@ public class calculator {
 				double B = Math.abs(scanner.nextDouble());
 				System.out.print("请输入存入年限");
 				int C = Math.abs(scanner.nextInt());
-				fruit=compound_interest(A, B, C);
+				fruit = compound_interest(A, B, C);
 				System.out.println("复利终值" + fruit);
 				main(null);
 			}
@@ -56,20 +57,20 @@ public class calculator {
 				double rate = Math.abs(scanner.nextDouble());
 				System.out.print("请输入存入年限");
 				double C = Math.abs(scanner.nextInt());
-				fruit=capital(A, rate, C);
+				fruit = capital(A, rate, C);
 				System.out.println("本金" + fruit);
 				main(null);
 			}
 				break;
 			case 4: {
-				int i=0;
+				int i = 0;
 				System.out.print("请输入本金");
 				double A = Math.abs(scanner.nextDouble());
 				System.out.print("请输入年利率");
 				double B = Math.abs(scanner.nextDouble());
 				System.out.print("请输入预期金额");
 				double C = Math.abs(scanner.nextDouble());
-				i=time(A, B, C);
+				i = time(A, B, C);
 				System.out.println("需" + i + "年");
 				main(null);
 			}
@@ -81,20 +82,20 @@ public class calculator {
 				double B = Math.abs(scanner.nextDouble());
 				System.out.print("请输入存入年限");
 				double C = Math.abs(scanner.nextDouble());
-				fruit=rate(A, B, C);
+				fruit = rate(A, B, C);
 				System.out.println("利率为" + fruit);
-			main(null);
+				main(null);
 			}
 				break;
 			case 6: {
 				System.out.print("请输入投资额");
 				double A = Math.abs(scanner.nextDouble());
-				System.out.print("请输入年利率");
+				System.out.print("请输入利率");
 				double B = Math.abs(scanner.nextDouble());
-				System.out.print("请输入存入年限");
+				System.out.print("请输入期限");
 				int C = Math.abs(scanner.nextInt());
-				fruit=invest(A, B, C);
-				System.out.println("最终获利" + fruit);
+				double fruit1 = invest(A, B, C);
+				record.writerecord(A, B, C, fruit1);
 				main(null);
 			}
 				break;
@@ -105,15 +106,23 @@ public class calculator {
 				double B = Math.abs(scanner.nextDouble());
 				System.out.print("请输入贷款年限");
 				int C = Math.abs(scanner.nextInt());
-				fruit=repayment(A, B, C);
-				//main(null);
+				fruit = repayment(A, B, C);
+				main(null);
 
 			}
 				break;
-			case 8:scanner.close();
+			case 8:
+				System.out.print("是否清除投资记录(y/n)");
+				String A = scanner.next();
+				if (A.equals("y"))
+					record.appendMethodB("E:\\JAVA1\\calculator\\invest.txt",
+							"", false);
+				scanner.close();
+				System.out.print("已退出");
 				break;
 			default:
-				System.out.print("请重新输入");
+				System.out.println("请重新输入");
+				main(null);
 			}
 		} catch (InputMismatchException e) {
 			input(k);
@@ -125,8 +134,9 @@ public class calculator {
 		double D = 1;
 		double C = c;
 		D = A * rate * C;
-		return A+D;
+		return A + D;
 	}
+
 	static String compound_interest(double a2, double b2, int c2) {
 		double A = a2;
 		double B = b2;
@@ -135,8 +145,9 @@ public class calculator {
 		for (int i = 1; i <= C; i++) {
 			D = D * (1 + B);
 		}
-		return String.format("%.4f", A*D);
+		return String.format("%.4f", A * D);
 	}
+
 	static String capital(double a2, double rate2, double c2) {
 		// TODO Auto-generated method stub
 		double A = a2;
@@ -147,8 +158,9 @@ public class calculator {
 			D = D * (1 + rate);
 		}
 
-		return String.format("%.4f", A/D);
+		return String.format("%.4f", A / D);
 	}
+
 	static int time(double a2, double b2, double c2) {
 		double A = a2;
 		double B = b2;
@@ -177,7 +189,7 @@ public class calculator {
 		return String.format("%.4f", D);
 	}
 
-	static String invest(double a2, double b2, int c2) {
+	static double invest(double a2, double b2, int c2) {
 		// TODO Auto-generated method stub
 		double A = a2;
 		double B = b2;
@@ -187,7 +199,7 @@ public class calculator {
 			D = D + A;
 			D = D * (1 + B);
 		}
-		return String.format("%.4f", D);
+		return D;
 	}
 
 	static String repayment(double a2, double b2, int c2) {
